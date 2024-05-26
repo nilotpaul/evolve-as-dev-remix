@@ -1,28 +1,75 @@
+import { getInitialThemeScript } from '../scripts/theme';
+import { LinksFunction, MetaFunction } from '@remix-run/cloudflare';
 import {
   Links,
   Meta,
   Outlet,
   Scripts,
   ScrollRestoration,
-} from "@remix-run/react";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { useState } from "react";
+  isRouteErrorResponse,
+  useLoaderData,
+  useRouteError,
+} from '@remix-run/react';
+import { getUserLoader } from './server/actions/auth.action';
+import { HydrationBoundary } from '@tanstack/react-query';
+import { useTheme } from './components/ThemeProvider';
 
-export function Layout({ children }: { children: React.ReactNode }) {
-  const queryClient = useState(() => new QueryClient({}));
+import Providers from './components/Providers';
+import { Toaster } from 'sonner';
+import { cn } from './lib/utils';
+import NotFound from './pages/NotFound';
+import styles from '~/globals.css?url';
+
+export const meta: MetaFunction = ({ error }) => {
+  if (isRouteErrorResponse(error) && error.status === 400) {
+    return [
+      {
+        title: 'Not Found',
+      },
+      {
+        name: 'description',
+        content: 'This page does not exists.',
+      },
+    ];
+  }
+
+  return [
+    {
+      title: 'Evolve As Dev',
+    },
+    {
+      name: 'description',
+      content: 'some desc',
+    },
+  ];
+};
+
+export const links: LinksFunction = () => [{ rel: 'stylesheet', href: styles }];
+
+export const loader = getUserLoader();
+
+function RootLayout({ children }: { children: React.ReactNode }) {
+  const { theme } = useTheme();
 
   return (
-    <html lang="en">
+    <html lang='en'>
       <head>
-        <meta charSet="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta charSet='utf-8' />
+        <meta name='viewport' content='width=device-width, initial-scale=1' />
         <Meta />
         <Links />
+        <script dangerouslySetInnerHTML={{ __html: getInitialThemeScript() }} />
       </head>
       <body>
-        <QueryClientProvider client={queryClient[0]}>
-          {children}
-        </QueryClientProvider>
+        <Toaster
+          cn={cn}
+          closeButton
+          duration={2000}
+          richColors
+          position='bottom-right'
+          theme={theme === 'dark' ? 'dark' : 'light'}
+        />
+        {children}
         <ScrollRestoration />
         <Scripts />
       </body>
@@ -31,5 +78,32 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
-  return <Outlet />;
+  const { dehydratedQuery } = useLoaderData<typeof loader>();
+
+  return (
+    <Providers>
+      <RootLayout>
+        <HydrationBoundary state={dehydratedQuery}>
+          <Outlet />
+        </HydrationBoundary>
+      </RootLayout>
+    </Providers>
+  );
 }
+
+export const ErrorBoundary = () => {
+  const err = useRouteError();
+  console.error('error from root: ', err);
+
+  if (isRouteErrorResponse(err) && err.status === 404) {
+    return (
+      <Providers>
+        <RootLayout>
+          <NotFound />
+        </RootLayout>
+      </Providers>
+    );
+  }
+
+  return `error from root: make sure to change this error page later.`;
+};

@@ -1,15 +1,15 @@
-import { Outlet } from '@remix-run/react';
 import Container from '~/components/Container';
 import Footer from '~/components/Footer';
+import Landing from '~/components/Landing';
 import Navbar from '~/components/nav/Navbar';
 
-const Home = () => {
+const Marketing = () => {
   return (
     <>
       <Navbar />
 
-      <Container className='mt-6'>
-        <Outlet />
+      <Container className='mt-24'>
+        <Landing />
       </Container>
 
       <Footer className='mt-32' />
@@ -17,4 +17,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default Marketing;
