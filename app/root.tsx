@@ -8,7 +8,6 @@ import {
   ScrollRestoration,
   isRouteErrorResponse,
   useLoaderData,
-  useRouteError,
 } from '@remix-run/react';
 import { getUserLoader } from './server/actions/auth.action';
 import { HydrationBoundary } from '@tanstack/react-query';
@@ -17,7 +16,6 @@ import { useTheme } from './components/ThemeProvider';
 import Providers from './components/Providers';
 import { Toaster } from 'sonner';
 import { cn } from './lib/utils';
-import NotFound from './pages/NotFound';
 import styles from '~/globals.css?url';
 
 export const meta: MetaFunction = ({ error }) => {
@@ -90,20 +88,3 @@ export default function App() {
     </Providers>
   );
 }
-
-export const ErrorBoundary = () => {
-  const err = useRouteError();
-  console.error('error from root: ', err);
-
-  if (isRouteErrorResponse(err) && err.status === 404) {
-    return (
-      <Providers>
-        <RootLayout>
-          <NotFound />
-        </RootLayout>
-      </Providers>
-    );
-  }
-
-  return `error from root: make sure to change this error page later.`;
-};

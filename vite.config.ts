@@ -3,34 +3,14 @@ import { getLoadContext } from './load-context';
 import { defineConfig } from 'vite';
 import tsconfigPaths from 'vite-tsconfig-paths';
 import { routesConfig } from './app/router';
-import { serverEnv } from './app/validations/env.server';
 
 export default () => {
-  const isProd = process.env.NODE_ENV === 'production';
-
   return defineConfig({
     server: {
       port: 5174,
-      proxy: {
-        '/auth-service': {
-          target: `${serverEnv.AUTH_SERVICE_URL}/api/v1`,
-          changeOrigin: true,
-          secure: isProd,
-          rewrite: (path) => path.replace(/^\/auth-service/, ''),
-        },
-        '/comment-service': {
-          target: `${serverEnv.COMMENT_SERVICE_URL}/api/v1`,
-          changeOrigin: true,
-          secure: isProd,
-          rewrite: (path) => path.replace(/^\/comment-service/, ''),
-        },
-        '/vote-service': {
-          target: `${serverEnv.VOTE_SERVICE_URL}/api/v1`,
-          changeOrigin: true,
-          secure: isProd,
-          rewrite: (path) => path.replace(/^\/vote-service/, ''),
-        },
-      },
+      // Proxy here is not required anymore as cloudflare doesn't support it.
+      // Made an internal proxy with loaders and actions.
+      proxy: {},
     },
     plugins: [
       cloudflareDevProxyVitePlugin({ getLoadContext }),

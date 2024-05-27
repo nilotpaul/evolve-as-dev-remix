@@ -1,6 +1,6 @@
 name = "evolve-as-dev-remix"
 compatibility_date = "2023-12-01"
-node_compat = true
+compatibility_flags = ["nodejs_compat"]
 
 dev.port = 5174
 

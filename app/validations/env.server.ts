@@ -1,7 +1,4 @@
-import { configDotenv } from 'dotenv';
 import { z } from 'zod';
-
-configDotenv({ path: './.dev.vars' });
 
 const serverEnvSchema = z.object({
   AUTH_SERVICE_URL: z.string().url(),
@@ -10,8 +7,6 @@ const serverEnvSchema = z.object({
   CLIENT_DOMAIN: z.string().url(),
 });
 
-export const cloudflareEnv = (env: Env) => {
+export const getEnv = (env: Env | ProcessEnv) => {
   return serverEnvSchema.parse(env);
 };
-
-export const serverEnv = serverEnvSchema.parse(process.env);
