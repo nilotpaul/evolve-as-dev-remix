@@ -8,6 +8,7 @@ import {
   ScrollRestoration,
   isRouteErrorResponse,
   useLoaderData,
+  useRouteError,
 } from '@remix-run/react';
 import { getUserLoader } from './server/actions/auth.action';
 import { HydrationBoundary } from '@tanstack/react-query';
@@ -16,6 +17,7 @@ import { useTheme } from './components/ThemeProvider';
 import Providers from './components/Providers';
 import { Toaster } from 'sonner';
 import { cn } from './lib/utils';
+
 import styles from '~/globals.css?url';
 
 export const meta: MetaFunction = ({ error }) => {
@@ -87,4 +89,12 @@ export default function App() {
       </RootLayout>
     </Providers>
   );
+}
+
+export function ErrorBoundary() {
+  const err = useRouteError();
+
+  console.log('root error:', err);
+
+  return <pre>{JSON.stringify(err)}</pre>;
 }
