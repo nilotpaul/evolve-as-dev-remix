@@ -17,9 +17,7 @@ export const routesConfig = (routes: DefineRouteFunction) => {
   // Eg. -> routes('/action/some-action', 'server/actions/some.action.ts');
   // It doesn't matter what the id is, its just for differentiating between
   // multiple routes that uses the same file.
-  routes('/auth-service/*', 'server/actions/proxy-action.ts', { id: 'auth' });
-  routes('/vote-service/*', 'server/actions/proxy-action.ts', { id: 'vote' });
-  routes('/comment-service/*', 'server/actions/proxy-action.ts', { id: 'comment' });
+  // -----------actions-----------------
 
   // Catch all routes that doesn't exists and show a 404 page.
   routes('*', 'pages/NotFound.tsx', { id: '404' });

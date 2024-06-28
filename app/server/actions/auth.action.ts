@@ -1,18 +1,19 @@
-import { LoaderFunctionArgs, json } from '@remix-run/cloudflare';
+import { LoaderFunctionArgs, json } from '@remix-run/node';
 import { QueryClient, dehydrate } from '@tanstack/react-query';
 import { getUser } from '~/hooks/useAuth';
-import { getEnv } from '~/validations/env.server';
+import { env } from '~/validations/env';
 
 export const getUserLoader =
   () =>
-  async ({ context, request }: LoaderFunctionArgs) => {
-    const { AUTH_SERVICE_URL } = getEnv(context.cloudflare.env);
+  async ({ request }: LoaderFunctionArgs) => {
     const queryClient = new QueryClient();
 
     await queryClient.prefetchQuery({
       queryKey: ['session'],
-      queryFn: () => getUser(`${AUTH_SERVICE_URL}/api/v1`, true, request.headers.get('cookie')),
+      queryFn: () => getUser(`${env.AUTH_SERVICE_URL}/api/v1`, true, request.headers.get('cookie')),
     });
 
-    return json({ dehydratedQuery: dehydrate(queryClient) });
+    return json({
+      dehydratedQuery: dehydrate(queryClient),
+    });
   };

@@ -1,19 +1,32 @@
-import { vitePlugin as remix, cloudflareDevProxyVitePlugin } from '@remix-run/dev';
-import { getLoadContext } from './load-context';
+import { vitePlugin as remix } from '@remix-run/dev';
 import { defineConfig } from 'vite';
 import tsconfigPaths from 'vite-tsconfig-paths';
 import { routesConfig } from './app/router';
+import { env } from './app/validations/env';
 
 export default () => {
   return defineConfig({
     server: {
       port: 5174,
-      // Proxy here is not required anymore as cloudflare doesn't support it.
-      // Made an internal proxy with loaders and actions.
-      proxy: {},
+      proxy: {
+        '/auth-service': {
+          target: `${env.AUTH_SERVICE_URL}/api/v1`,
+          changeOrigin: true,
+          rewrite: (path) => path.replace(/^\/auth-service/, ''),
+        },
+        '/comment-service': {
+          target: `${env.COMMENT_SERVICE_URL}/api/v1`,
+          changeOrigin: true,
+          rewrite: (path) => path.replace(/^\/comment-service/, ''),
+        },
+        '/vote-service': {
+          target: `${env.VOTE_SERVICE_URL}/api/v1`,
+          changeOrigin: true,
+          rewrite: (path) => path.replace(/^\/vote-service/, ''),
+        },
+      },
     },
     plugins: [
-      cloudflareDevProxyVitePlugin({ getLoadContext }),
       remix({
         future: {
           v3_fetcherPersist: true,
