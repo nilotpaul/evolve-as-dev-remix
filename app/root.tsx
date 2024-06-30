@@ -19,6 +19,7 @@ import { Toaster } from 'sonner';
 import { cn } from './lib/utils';
 
 import styles from '~/globals.css?url';
+import DottedBackground from './components/ui/dotted-background';
 
 export const meta: MetaFunction = ({ error }) => {
   if (isRouteErrorResponse(error) && error.status === 400) {
@@ -69,6 +70,7 @@ function RootLayout({ children }: { children: React.ReactNode }) {
           position='bottom-right'
           theme={theme === 'dark' ? 'dark' : 'light'}
         />
+        <DottedBackground />
         {children}
         <ScrollRestoration />
         <Scripts />

@@ -1,45 +1,54 @@
-import ContactForm from './ContactForm';
-import DevRooms from './DevRooms';
-import ServiceShowcase from './ServiceShowcase';
-import { Button } from './ui/button';
+import { cn } from '~/lib/utils';
+import { MoveRight } from 'lucide-react';
+import { HoverBorderGradient } from './ui/hover-border-gradiant';
+import { FlipWords } from './ui/flip-words';
 import RecentPosts from './RecentPosts';
+import Heading from './ui/Heading';
 
 const Landing = () => {
+  const words = ['World', 'of', 'Stories'];
+
   return (
-    <>
-      <div className='grid md:grid-cols-[minmax(300px,1.75fr)_minmax(350px,1.25fr)] sm:gap-x-8 md:gap-x-12'>
-        <section className='prose dark:prose-invert max-w-2xl'>
-          <h1>Landing Page</h1>
-          <p className='font-semibold'>Some lorem paragraph bullshit</p>
+    <div className='space-y-44'>
+      <section className='mx-auto max-w-6xl text-center tracking-tight'>
+        <div className='xs:mt-24 mt-24 text-4xl font-extrabold sm:mt-28 sm:text-5xl lg:text-6xl lg:leading-[1.2]'>
+          Welcome to{' '}
+          <span>
+            Evolve <span className='text-green-600/70'>As</span> Dev
+          </span>
+          <span>, Discover a</span> <br /> <FlipWords duration={500} words={words} />
+        </div>
 
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis expedita, voluptas,
-            ea, aut distinctio laboriosam alias nemo sint facilis porro illo atque maiores
-            voluptates dolorum a quisquam dicta iusto maxime.
-          </p>
+        <p
+          className={cn(
+            'dark:text-foreground-700 xs:mt-8 mx-auto mt-8 w-full max-w-3xl text-lg font-medium text-[#e9e7e7]'
+          )}
+        >
+          Explore captivating books, from thrilling adventures to heartwarming tales, in our diverse
+          library of boundless imagination crafted by talented authors.
+        </p>
 
-          <div className='flex items-center mt-12 gap-5'>
-            <Button className='rounded-full font-semibold'>Get Started</Button>
-            <Button variant='outline' className='rounded-full border-2'>
-              See More
-            </Button>
-          </div>
-        </section>
+        <div className={cn('mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row')}>
+          <HoverBorderGradient
+            containerClassName='rounded-full'
+            as='button'
+            className='flex items-center space-x-2.5 bg-white py-3 text-black dark:bg-black dark:text-white'
+          >
+            <span>Start Exploring</span> <MoveRight className='h-5 w-5' />
+          </HoverBorderGradient>
+        </div>
+      </section>
 
-        <section className='justify-center hidden md:flex w-full'>
-          <img
-            src='/illustration-2.png'
-            alt='Landing Illustration'
-            className='object-contain max-w-full h-auto -mt-16'
-          />
-        </section>
-      </div>
+      <section>
+        <Heading>Recent Articles</Heading>
+        <RecentPosts />
+      </section>
 
+      {/* 
       <ServiceShowcase />
       <DevRooms />
-      <RecentPosts />
-      <ContactForm />
-    </>
+      <ContactForm /> */}
+    </div>
   );
 };
 

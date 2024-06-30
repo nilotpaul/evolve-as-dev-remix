@@ -1,4 +1,4 @@
-import { LoaderCircle, LucideProps, Sun } from 'lucide-react';
+import { LoaderCircle, LucideProps, Search, Sun } from 'lucide-react';
 import { EnterIcon, MoonIcon, CalendarIcon, ClockIcon, CaretLeftIcon } from '@radix-ui/react-icons';
 import { cn } from '~/lib/utils';
 import { ComponentProps } from 'react';
@@ -17,6 +17,7 @@ const Icons = {
   Calender: CalendarIcon,
   Clock: ClockIcon,
   leftArrow: CaretLeftIcon,
+  Search: Search,
 };
 
 export default Icons;

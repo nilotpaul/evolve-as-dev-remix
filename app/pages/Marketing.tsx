@@ -8,11 +8,11 @@ const Marketing = () => {
     <>
       <Navbar />
 
-      <Container className='mt-24'>
+      <Container className='mb-64 mt-40'>
         <Landing />
       </Container>
 
-      <Footer className='mt-32' />
+      <Footer className='mt-20' />
     </>
   );
 };

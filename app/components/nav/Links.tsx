@@ -2,6 +2,8 @@ import { NAV_LINKS } from '~/config/site-links';
 import { Button } from '../ui/button';
 import { NavLink } from '@remix-run/react';
 import { cn } from '~/lib/utils';
+import { Input } from '../ui/input';
+import Icons from '~/config/Icons';
 
 type LinksProps = {
   className?: string;
@@ -9,33 +11,37 @@ type LinksProps = {
 
 const Links = ({ className }: LinksProps) => {
   return (
-    <ul className={cn('flex items-center gap-8', className)}>
-      {NAV_LINKS.map((link) => {
-        return (
-          <li key={link.path}>
-            <Button
-              className={cn(
-                'px-0 text-neutral-600 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-200'
-              )}
-              variant='link'
-              size='sm'
-            >
-              <NavLink
-                to={link.path}
-                className={({ isActive }) =>
-                  cn(
-                    'text-base text-neutral-600 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-200 sm:text-sm',
-                    isActive && 'text-neutral-900 underline dark:text-neutral-200'
-                  )
-                }
-              >
-                {link.name}
-              </NavLink>
-            </Button>
-          </li>
-        );
-      })}
-    </ul>
+    <div className='flex w-full items-center rounded-3xl bg-[#1d1c20] bg-opacity-50'>
+      {NAV_LINKS.map(({ name, path }) => (
+        <NavLink
+          className={({ isActive }) =>
+            cn('rounded-3xl px-9 py-3 text-sm font-medium hover:underline', {
+              'bg-muted/70 hover:no-underline': isActive,
+            })
+          }
+          key={`${name}-${path}`}
+          to={path}
+        >
+          {name}
+        </NavLink>
+      ))}
+
+      <div className='ml-auto mr-1.5 flex items-center gap-1.5'>
+        <Input
+          type='text'
+          placeholder='search...'
+          className='h-9 rounded-full bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0'
+        />
+        <Button
+          aria-label='Search'
+          variant='secondary'
+          size='icon'
+          className='h-9 w-11 rounded-full'
+        >
+          <Icons.Search className='h-4 w-4' />
+        </Button>
+      </div>
+    </div>
   );
 };
 

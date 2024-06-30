@@ -12,7 +12,10 @@ const Brand = ({ className, textClassName, ...props }: BrandProps) => {
   const { theme } = useTheme();
 
   return (
-    <div {...props} className={cn('xs:text-base flex items-center text-sm font-bold', className)}>
+    <div
+      {...props}
+      className={cn('xs:text-base flex items-center justify-center text-sm font-bold', className)}
+    >
       {theme ? (
         <img
           src={theme === 'light' ? '/logo-light.png' : '/logo-dark.png'}
@@ -31,9 +34,9 @@ const Brand = ({ className, textClassName, ...props }: BrandProps) => {
           textClassName
         )}
       >
-        <span>Evolve</span>
-        <span className='text-red-500'>AS</span>
-        <span>Dev</span>
+        <span>E</span>
+        <span className='text-green-600/70'>Dev</span>
+        {/* <span>Dev</span> */}
       </h1>
     </div>
   );

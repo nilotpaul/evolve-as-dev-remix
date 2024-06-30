@@ -1,46 +1,41 @@
 import { useSession } from '~/hooks/useAuth';
 
+import { Button } from '../ui/button';
 import Icons from '~/config/Icons';
 import Brand from '../Brand';
 import Container from '../Container';
 import ThemeToggle from '../ThemeToggle';
-import Links from './Links';
 import User from '../User';
 import UserLoading from '../loadings/UserLoading';
-import { Link } from '@remix-run/react';
+import Links from './Links';
 
 const Navbar = () => {
   const { session, isLoading } = useSession();
 
   return (
-    <nav className='sticky left-0 top-0 z-40 flex h-16 w-full items-center justify-center border-b border-slate-300 bg-background dark:border-b-neutral-800'>
-      <Container className='flex w-full items-center justify-between'>
-        <div className='flex w-full items-center justify-between'>
-          <Link to='/'>
-            <Brand />
-          </Link>
-          <Links className='-ml-12 hidden sm:flex' />
+    <Container className='sticky my-6 flex max-w-[95rem] items-center justify-evenly gap-x-4'>
+      <Brand className='mr-4' />
 
-          <div className='flex cursor-pointer items-center gap-3'>
-            <ThemeToggle />
-            {!isLoading ? (
-              <>
-                {!session?.id ? (
-                  <Link to='/login' className='flex items-center text-sm font-medium'>
-                    Login
-                    <Icons.Login className='ml-2' />
-                  </Link>
-                ) : (
-                  <User session={session} />
-                )}
-              </>
+      <Links />
+
+      <div className='flex items-center gap-3'>
+        <ThemeToggle />
+        {!isLoading ? (
+          <>
+            {session?.id ? (
+              <User session={session} />
             ) : (
-              <UserLoading />
+              <Button className='gap-2 rounded-3xl px-3'>
+                <Icons.Login />
+                Login
+              </Button>
             )}
-          </div>
-        </div>
-      </Container>
-    </nav>
+          </>
+        ) : (
+          <UserLoading />
+        )}
+      </div>
+    </Container>
   );
 };
 
