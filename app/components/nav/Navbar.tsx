@@ -8,13 +8,14 @@ import ThemeToggle from '../ThemeToggle';
 import User from '../User';
 import UserLoading from '../loadings/UserLoading';
 import Links from './Links';
+import { Link } from '@remix-run/react';
 
 const Navbar = () => {
   const { session, isLoading } = useSession();
 
   return (
-    <Container className='sticky my-6 flex max-w-[95rem] items-center justify-evenly gap-x-4'>
-      <Brand className='mr-4' />
+    <Container className='sticky my-6 mt-4 flex items-center justify-evenly gap-x-4'>
+      <Brand className='mr-3' />
 
       <Links />
 
@@ -25,10 +26,12 @@ const Navbar = () => {
             {session?.id ? (
               <User session={session} />
             ) : (
-              <Button className='gap-2 rounded-3xl px-3'>
-                <Icons.Login />
-                Login
-              </Button>
+              <Link to='/login'>
+                <Button className='gap-2 rounded-3xl px-3'>
+                  <Icons.Login />
+                  Login
+                </Button>
+              </Link>
             )}
           </>
         ) : (

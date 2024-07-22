@@ -4,15 +4,19 @@ export const NAV_LINKS = [
     path: '/',
   },
   {
-    name: 'item 2',
+    name: 'Blogs',
     path: '/item2',
   },
   {
-    name: 'item 3',
+    name: 'Articels',
     path: '/item3',
   },
   {
-    name: 'item 4',
+    name: 'Market Place',
     path: '/item4',
+  },
+  {
+    name: 'Support',
+    path: '/item5',
   },
 ];

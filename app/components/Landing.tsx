@@ -2,30 +2,32 @@ import { cn } from '~/lib/utils';
 import { MoveRight } from 'lucide-react';
 import { HoverBorderGradient } from './ui/hover-border-gradiant';
 import { FlipWords } from './ui/flip-words';
-import RecentPosts from './RecentPosts';
-import Heading from './ui/Heading';
+import PostShowcase from './PostShowcase';
+import InfoCards from './InfoCards';
+import PostShowcaseReverse from './PostShowcaseReverse';
 
 const Landing = () => {
-  const words = ['World', 'of', 'Stories'];
+  const words = ['Boost', 'Your', 'Development'];
 
   return (
     <div className='space-y-44'>
       <section className='mx-auto max-w-6xl text-center tracking-tight'>
-        <div className='xs:mt-24 mt-24 text-4xl font-extrabold sm:mt-28 sm:text-5xl lg:text-6xl lg:leading-[1.2]'>
-          Welcome to{' '}
-          <span>
-            Evolve <span className='text-green-600/70'>As</span> Dev
-          </span>
-          <span>, Discover a</span> <br /> <FlipWords duration={500} words={words} />
-        </div>
+        <h1 className='xs:mt-24 font_lato mt-24 text-4xl font-bold sm:mt-28 sm:text-5xl lg:text-6xl lg:leading-tight'>
+          Transform your coding path with advanced solutions and{' '}
+          <span className='bg-gradient-to-tr from-red-500 to-blue-500 bg-clip-text text-transparent'>
+            Support that&apos;ll
+          </span>{' '}
+          <br />
+          <FlipWords duration={800} words={words} />
+        </h1>
 
         <p
           className={cn(
-            'dark:text-foreground-700 xs:mt-8 mx-auto mt-8 w-full max-w-3xl text-lg font-medium text-[#e9e7e7]'
+            'dark:text-foreground-700 xs:mt-8 mx-auto mt-8 w-full max-w-3xl text-lg font-medium text-gray-300'
           )}
         >
-          Explore captivating books, from thrilling adventures to heartwarming tales, in our diverse
-          library of boundless imagination crafted by talented authors.
+          Experience rapid growth with Evolve As Dev, where we enhance and expedite your development
+          journey with cutting-edge tools and guidance.
         </p>
 
         <div className={cn('mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row')}>
@@ -39,10 +41,13 @@ const Landing = () => {
         </div>
       </section>
 
-      <section>
-        <Heading>Recent Articles</Heading>
-        <RecentPosts />
+      <section className='space-y-64'>
+        {/* <RecentPosts /> */}
+        <PostShowcase />
+        <PostShowcaseReverse />
       </section>
+
+      <InfoCards />
 
       {/* 
       <ServiceShowcase />

@@ -15,7 +15,7 @@ const Links = ({ className }: LinksProps) => {
       {NAV_LINKS.map(({ name, path }) => (
         <NavLink
           className={({ isActive }) =>
-            cn('rounded-3xl px-9 py-3 text-sm font-medium hover:underline', {
+            cn('rounded-3xl px-7 py-3 text-sm font-medium hover:underline', {
               'bg-muted/70 hover:no-underline': isActive,
             })
           }
