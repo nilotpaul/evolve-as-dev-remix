@@ -12,9 +12,7 @@ const Heading = ({ classNames, children, ...props }: HeadingProps) => {
   return (
     <h1 {...props} className={cn('xs:text-4xl w-fit text-3xl font-bold', classNames?.h1)}>
       {children}
-      <Separator
-        className={cn('dark:bg-rose mt-1.5 h-[2.5px] bg-green-600/20', classNames?.separator)}
-      />
+      <Separator className={cn('dark:bg-rose mt-1.5 h-px', classNames?.separator)} />
     </h1>
   );
 };

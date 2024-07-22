@@ -15,7 +15,7 @@ const Navbar = () => {
 
   return (
     <Container className='sticky my-6 mt-4 flex items-center justify-evenly gap-x-4'>
-      <Brand className='mr-3' />
+      <Brand className='ml-1.5 mr-2' />
 
       <Links />
 

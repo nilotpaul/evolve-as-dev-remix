@@ -1,7 +1,13 @@
 import { format } from 'date-fns';
 import GradiantButton from './ui/GradiantButton';
+import { cn } from '~/lib/utils';
 
-const PostShowcase = () => {
+type PostShowcaseProps = {
+  type?: 'default' | 'reverse';
+  shadowClassName?: string;
+};
+
+const PostShowcase = ({ type = 'default', shadowClassName }: PostShowcaseProps) => {
   const post = {
     title: 'Surface the insights that matter',
     thumbnail: '/post-thumbnail.png',
@@ -17,7 +23,12 @@ const PostShowcase = () => {
 
   return (
     <article className='mt-12 grid grid-cols-[50%,40%] place-content-between'>
-      <div className='relative h-[550px] w-[500px] rounded-xl bg-gradient-to-b from-[#fe7587] to-blue-500 pl-8 pt-12'>
+      <div
+        className={cn(
+          'relative h-[550px] w-[500px] rounded-xl bg-gradient-to-b from-[#fe7587] to-blue-500 pl-8 pt-12',
+          { 'order-2': type === 'reverse' }
+        )}
+      >
         <img
           src={post.thumbnail}
           alt={post.title}
@@ -28,16 +39,31 @@ const PostShowcase = () => {
         <img
           src={'/main.png'}
           alt={'test'}
-          className='absolute -bottom-20 -right-20 h-[200px] w-[400px] rounded-lg object-cover shadow-xl shadow-black brightness-95'
+          className={cn(
+            'absolute -bottom-20 -right-20 h-[200px] w-[400px] rounded-lg object-cover shadow-xl shadow-black brightness-95',
+            {
+              '-left-20': type === 'reverse',
+            }
+          )}
         />
 
         <div
           aria-disabled='true'
-          className='absolute -right-12 top-1/2 -z-50 mt-12 h-80 w-32 -translate-y-1/2 rounded-r-full bg-[#fe7587] opacity-90 blur-3xl brightness-[.75]'
+          className={cn(
+            'absolute -right-12 top-1/2 -z-50 mt-12 h-80 w-32 -translate-y-1/2 rounded-r-full bg-[#fe7587] opacity-90 blur-3xl brightness-[.75]',
+            {
+              '-left-8': type === 'reverse',
+            },
+            shadowClassName
+          )}
         />
       </div>
 
-      <div className='mt-32 flex h-full flex-col gap-7'>
+      <div
+        className={cn('mt-32 flex h-full max-w-[500px] flex-col gap-7', {
+          'order-1': type === 'reverse',
+        })}
+      >
         <span className='font-semibold tracking-widest text-blue-500'>
           {format(post.publishedDate, 'mo MMM, yy')}
         </span>

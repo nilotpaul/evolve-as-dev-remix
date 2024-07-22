@@ -11,7 +11,9 @@ type LinksProps = {
 
 const Links = ({ className }: LinksProps) => {
   return (
-    <div className='flex w-full items-center rounded-3xl bg-[#1d1c20] bg-opacity-50'>
+    <div
+      className={cn('flex w-full items-center rounded-3xl bg-[#1d1c20] bg-opacity-50', className)}
+    >
       {NAV_LINKS.map(({ name, path }) => (
         <NavLink
           className={({ isActive }) =>

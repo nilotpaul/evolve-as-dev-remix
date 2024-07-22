@@ -1,75 +1,41 @@
-import Icons from '~/config/Icons';
-import { cn } from '~/lib/utils';
 import { format } from 'date-fns';
+
+import { CalendarIcon } from '@radix-ui/react-icons';
+import { AspectRatio } from './ui/aspect-ratio';
 import { Post } from '~/types/blog-types';
 
 type PostPreviewProps = {
-  post: Post; // Change this to the actual post type later if required.
-  className?: string;
-  imageClassName?: string;
-  postTitleClassName?: string;
-  postDetailsClassName?: string;
-  format?: 'default' | 'center';
-  image?: {
-    h?: number | string;
-    w?: number | string;
-  };
+  post: Omit<Post, 'content'>;
+  thumbnail?: boolean;
 };
 
-const PostPreview = ({
-  post,
-  className,
-  imageClassName,
-  postDetailsClassName,
-  postTitleClassName,
-  format: postFormat = 'default',
-  image = {
-    h: 200,
-    w: 400,
-  },
-}: PostPreviewProps) => {
+const PostPreview = ({ post, thumbnail = true }: PostPreviewProps) => {
   return (
-    <article
-      className={cn(
-        'group relative flex cursor-pointer flex-col overflow-hidden rounded-lg shadow-lg transition-transform duration-300 hover:scale-[1.015]',
-        className
+    <article className='group flex cursor-pointer flex-col transition duration-300 hover:scale-[1.02]'>
+      {thumbnail && (
+        <AspectRatio ratio={3 / 1.5} className='relative'>
+          <img
+            src={post.coverImg.url}
+            alt={post.title}
+            className='h-full w-full rounded-md object-fill shadow-lg shadow-zinc-400 dark:shadow-gray-900'
+          />
+        </AspectRatio>
       )}
-    >
-      <div className='relative'>
-        <img
-          src={post.thumbnail}
-          alt={post.title}
-          height={image.h}
-          width={image.w}
-          className={cn(
-            'transition-filter h-[250px] min-w-full object-cover blur-[0.25px] brightness-[0.65] filter duration-300 group-hover:brightness-50',
-            imageClassName
-          )}
-        />
-        <div
-          className={cn(
-            'absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-black via-transparent to-transparent p-4 transition-opacity duration-300',
-            { 'gap-2 p-10': postFormat === 'center' }
-          )}
-        >
-          <h2 className={cn('text-xl font-bold text-white', postTitleClassName)}>{post.title}</h2>
-          <p
-            className={cn(
-              'inline-flex gap-x-1.5 py-2 text-xs font-medium text-gray-400',
-              postDetailsClassName
-            )}
-          >
-            <Icons.Calender />
-            <span className='flex space-x-2'>
-              <span>{format(post.publishedDate, 'MMM dd, yyyy')}</span>
-              <span>|</span>
-              <span className='flex gap-x-1.5'>
-                <Icons.Clock /> {post.readingTime} min read
-              </span>
-            </span>
-          </p>
-        </div>
-      </div>
+
+      <h2 className='xs:text-2xl mt-3 text-xl font-bold transition-colors group-hover:text-rose-500 sm:text-xl'>
+        {post.title}
+      </h2>
+      <p
+        className='inline-flex gap-x-1.5 py-2 text-xs font-medium
+        text-zinc-700 dark:text-zinc-400'
+      >
+        <CalendarIcon />
+        <span>{format(new Date(), 'MMM, dd, yyyy')}</span>
+      </p>
+
+      <p className='mt-4 line-clamp-3 text-sm text-zinc-700 dark:text-zinc-400'>
+        {post.excerpt.text}
+      </p>
     </article>
   );
 };

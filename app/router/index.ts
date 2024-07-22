@@ -4,10 +4,15 @@ export const routesConfig = (routes: DefineRouteFunction) => {
   // '/' -> route will only render the marketing page.
   routes('/', 'pages/Marketing.tsx', { index: true });
 
-  // Default HomePage for all routes after '/*'
+  // Default Homepage for all routes after '/*'
   routes('/', 'pages/Home.tsx', () => {
     // All nested routes will inherit the layout of the parent route i.e. Home
-    routes('/test', 'pages/Test.tsx');
+    routes('/blogs', 'pages/Blogs.tsx');
+    routes('/articles', 'pages/Articles.tsx');
+    routes('/marketplace', 'pages/Marketplace.tsx');
+    routes('/support', 'pages/Support.tsx');
+
+    routes('/blogs/:category', 'pages/Category.tsx');
   });
 
   // Independent routes i.e. no parent layout (eg - Login Page).

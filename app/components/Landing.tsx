@@ -1,10 +1,10 @@
-import { cn } from '~/lib/utils';
 import { MoveRight } from 'lucide-react';
 import { HoverBorderGradient } from './ui/hover-border-gradiant';
 import { FlipWords } from './ui/flip-words';
 import PostShowcase from './PostShowcase';
 import InfoCards from './InfoCards';
-import PostShowcaseReverse from './PostShowcaseReverse';
+import GradiantInfoText from './GradiantInfoText';
+import { Separator } from './ui/separator';
 
 const Landing = () => {
   const words = ['Boost', 'Your', 'Development'];
@@ -21,16 +21,12 @@ const Landing = () => {
           <FlipWords duration={800} words={words} />
         </h1>
 
-        <p
-          className={cn(
-            'dark:text-foreground-700 xs:mt-8 mx-auto mt-8 w-full max-w-3xl text-lg font-medium text-gray-300'
-          )}
-        >
+        <p className='dark:text-foreground-700 xs:mt-8 mx-auto mt-8 w-full max-w-3xl text-lg font-medium text-gray-300'>
           Experience rapid growth with Evolve As Dev, where we enhance and expedite your development
           journey with cutting-edge tools and guidance.
         </p>
 
-        <div className={cn('mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row')}>
+        <div className='mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row'>
           <HoverBorderGradient
             containerClassName='rounded-full'
             as='button'
@@ -41,10 +37,20 @@ const Landing = () => {
         </div>
       </section>
 
+      <section className='mx-auto max-w-4xl'>
+        <Separator className='mb-16 h-[2.5px]' />
+        <GradiantInfoText />
+        <Separator className='mt-16 h-[2.5px]' />
+      </section>
+
+      <h3 className='mx-auto max-w-4xl text-center text-4xl font-bold leading-snug'>
+        Leading customer feedback intelligence for product development teams
+      </h3>
       <section className='space-y-64'>
         {/* <RecentPosts /> */}
         <PostShowcase />
-        <PostShowcaseReverse />
+        <PostShowcase type='reverse' shadowClassName='bg-violet-500/80' />
+        <PostShowcase />
       </section>
 
       <InfoCards />
