@@ -2,20 +2,21 @@ import { format } from 'date-fns';
 
 import { CalendarIcon } from '@radix-ui/react-icons';
 import { AspectRatio } from './ui/aspect-ratio';
-import { Post } from '~/types/blog-types';
 
 type PostPreviewProps = {
-  post: Omit<Post, 'content'>;
+  excerpt: string;
+  title: string;
+  image: string;
   thumbnail?: boolean;
 };
 
-const PostPreview = ({ post, thumbnail = true }: PostPreviewProps) => {
+const PostPreview = ({ thumbnail = true, ...post }: PostPreviewProps) => {
   return (
     <article className='group flex cursor-pointer flex-col transition duration-300 hover:scale-[1.02]'>
       {thumbnail && (
         <AspectRatio ratio={3 / 1.5} className='relative'>
           <img
-            src={post.coverImg.url}
+            src={post.image}
             alt={post.title}
             className='h-full w-full rounded-md object-fill shadow-lg shadow-zinc-400 dark:shadow-gray-900'
           />
@@ -33,9 +34,7 @@ const PostPreview = ({ post, thumbnail = true }: PostPreviewProps) => {
         <span>{format(new Date(), 'MMM, dd, yyyy')}</span>
       </p>
 
-      <p className='mt-4 line-clamp-3 text-sm text-zinc-700 dark:text-zinc-400'>
-        {post.excerpt.text}
-      </p>
+      <p className='mt-4 line-clamp-3 text-sm text-zinc-700 dark:text-zinc-400'>{post.excerpt}</p>
     </article>
   );
 };

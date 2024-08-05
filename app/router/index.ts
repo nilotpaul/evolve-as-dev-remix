@@ -13,6 +13,7 @@ export const routesConfig = (routes: DefineRouteFunction) => {
     routes('/support', 'pages/Support.tsx');
 
     routes('/blogs/:category', 'pages/Category.tsx');
+    routes('/blogs/:category/:slug', 'pages/Post.tsx');
   });
 
   // Independent routes i.e. no parent layout (eg - Login Page).
@@ -22,7 +23,7 @@ export const routesConfig = (routes: DefineRouteFunction) => {
   // Eg. -> routes('/action/some-action', 'server/actions/some.action.ts');
   // It doesn't matter what the id is, its just for differentiating between
   // multiple routes that uses the same file.
-  // -----------actions-----------------
+  routes('/action/filter-posts', 'server/actions/post.action.ts');
 
   // Catch all routes that doesn't exists and show a 404 page.
   routes('*', 'pages/NotFound.tsx', { id: '404' });

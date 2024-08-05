@@ -1,23 +1,32 @@
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { Post, SearchResult } from '~/types/blog-types';
 import { env } from '~/validations/env';
+import { FilterPost } from '~/validations/post.validation';
 
 // getHygraphData gets the data from hyfraph endpoint.
 // Takes a graphql query of type string as parameter.
 // Returns the response object and the hygraph data.
 export const getHygraphData = async (query: string) => {
-  const result = await axios.post(
-    env.HYGRAPH_API_URL,
-    { query },
-    {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${env.HYGRAPH_API_TOKEN}`,
-      },
-    }
-  );
+  try {
+    const result = await axios.post(
+      env.HYGRAPH_API_URL,
+      { query },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${env.HYGRAPH_API_TOKEN}`,
+        },
+      }
+    );
 
-  return { response: result, data: result.data?.data ?? null };
+    return { response: result, data: result.data?.data ?? null };
+  } catch (err) {
+    if (err instanceof AxiosError) {
+      return { response: err.response, data: null };
+    }
+
+    return { response: undefined, data: null };
+  }
 };
 
 export const getPosts = async () => {
@@ -25,7 +34,6 @@ export const getPosts = async () => {
     query Posts {
       posts {
         id
-        isDownloadable
         isFeatured
         publishDate
         category
@@ -53,7 +61,6 @@ export const getFeaturedPost = async () => {
     query Posts {
       posts(where: { isFeatured: true } ) {
         id
-        isDownloadable
         isFeatured
         publishDate
         category
@@ -81,7 +88,6 @@ export const getPostsByCategory = async (category: string) => {
     query Posts {
       posts(where: { category_contains_some: "${category}" }) {
         id
-        isDownloadable
         isFeatured
         publishDate
         updatedAt
@@ -110,7 +116,6 @@ export const getPostBySlug = async ({ category, slug }: { slug: string; category
     query Posts {
       posts(where: { category_contains_some: "${category}", slug: "${slug}" } ) {
         id
-        isDownloadable
         publishDate
         category
         tag
@@ -140,6 +145,7 @@ export const getPostsByTitle = async (title: string) => {
     query Posts {
       posts(where: { title_contains: "${title}" } ) {
         id
+        isFeatured
         publishDate
         category
         tag
@@ -165,7 +171,6 @@ export const getPostsByTag = async (tag: string) => {
     query Posts {
       posts(where: { tag_contains_some: "${tag}" } ) {
         id
-        isDownloadable
         publishDate
         category
         tag
@@ -195,7 +200,6 @@ export const getPostsByAuthor = async (authorName: string, limit: number = 6) =>
     query Posts {
       posts(where: { author_contains: "${authorName}" }, first: ${limit}) {
         id
-        isDownloadable
         publishDate
         category
         tag
@@ -215,4 +219,36 @@ export const getPostsByAuthor = async (authorName: string, limit: number = 6) =>
   const { data } = await getHygraphData(query);
 
   return data?.posts as Omit<Post, 'content'>[];
+};
+
+export const filterPosts = async (filters: FilterPost, limit: number = 6) => {
+  const category = filters.category.map((c) => `"${c}"`);
+  const tag = filters.tag.map((tag) => `"${tag}"`);
+
+  const comma = category.length === 0 || tag.length === 0 ? '' : ',';
+
+  const query = `
+    query Posts {
+      posts(where: { ${tag.length === 0 ? '' : `tag_contains_some: [${tag}]`} ${comma} ${category.length === 0 ? '' : `category_contains_some: [${category}]`} } first: ${limit}) {
+        id
+        isFeatured
+        publishDate
+        category
+        tag
+        slug
+        title
+        excerpt {
+          text
+        }
+        coverImg {
+          url
+        }
+        author
+      }
+    }
+  `;
+
+  const { data } = await getHygraphData(query);
+
+  return data?.posts as SearchResult[] | undefined;
 };

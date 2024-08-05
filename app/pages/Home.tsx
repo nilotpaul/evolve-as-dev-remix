@@ -8,7 +8,7 @@ const Home = () => {
     <>
       <Navbar />
 
-      <Container className='mt-12'>
+      <Container className='mt-16'>
         <Outlet />
       </Container>
 

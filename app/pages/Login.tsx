@@ -31,7 +31,7 @@ const Login = () => {
       onSubmit={(e) => e.preventDefault()}
       className='mx-auto flex h-[calc(100vh-2.5rem)] w-full max-w-xs flex-col items-center justify-center'
     >
-      <Brand textClassName='text-2xl sm:text-2xl' />
+      <Brand linkDisabled textClassName='text-2xl sm:text-2xl' />
 
       <div className='mt-12 flex w-full flex-col items-center justify-center gap-4'>
         {providers.map(({ provider, text }) => (

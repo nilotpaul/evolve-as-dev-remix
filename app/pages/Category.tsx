@@ -1,37 +1,40 @@
 import { HeadersFunction, LoaderFunctionArgs, json } from '@remix-run/node';
-import { Link, useLoaderData, useParams } from '@remix-run/react';
+import { Link, useLoaderData } from '@remix-run/react';
 import PostPreview from '~/components/PostPreview';
 import GridWrapper from '~/components/ui/GridWrapper';
 import Heading from '~/components/ui/Heading';
-import { getPostsByTag } from '~/lib/hygraph';
+import { cacheHeaders } from '~/config/app';
+import { getPostsByCategory } from '~/lib/hygraph';
 
-export const headers: HeadersFunction = () => {
-  return {
-    'Cache-Control': 'max-age=604800, stale-while-revalidate=86400',
-  };
-};
+// Cache control headers for this category page.
+export const headers: HeadersFunction = cacheHeaders();
 
+// This loader will get all posts by category on the server.
 export const loader = async ({ params }: LoaderFunctionArgs) => {
   const category = params.category as string;
 
-  const posts = await getPostsByTag(category);
+  const posts = await getPostsByCategory(category);
+  if (!posts || posts.length === 0) {
+    throw new Response(null, {
+      status: 404,
+      statusText: "This category doesn't exist",
+    });
+  }
 
   return json({ posts });
 };
 
 const Category = () => {
-  const params = useParams();
-
   const { posts } = useLoaderData<typeof loader>();
 
   return (
-    <div className='space-y-6'>
+    <div className='space-y-8'>
       <Heading
         classNames={{
           h1: 'capitalize',
         }}
       >
-        Posts for {params.category}
+        Posts for {posts[0].category}
       </Heading>
 
       <GridWrapper>
