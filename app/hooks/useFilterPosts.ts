@@ -1,9 +1,16 @@
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { FilterPost, filterPostSchema } from '~/validations/post.validation';
-import { useQuery } from '@tanstack/react-query';
+import { useInfiniteQuery } from '@tanstack/react-query';
 import axios from 'axios';
-import { SearchResult } from '~/types/blog-types';
+import { FilteredPaginatedPosts, SearchResult } from '~/types/blog-types';
+
+export type QueryResult =
+  | FilteredPaginatedPosts['data']['postsConnection']
+  | {
+      edges: FilteredPaginatedPosts['data']['postsConnection']['edges'];
+      pageInfo?: FilteredPaginatedPosts['data']['postsConnection']['pageInfo'];
+    };
 
 export const useFilterPosts = (initialData?: SearchResult[]) => {
   const form = useForm<FilterPost>({
@@ -16,22 +23,41 @@ export const useFilterPosts = (initialData?: SearchResult[]) => {
 
   const filters = form.getValues();
 
-  const queryResult = useQuery<SearchResult[]>({
-    queryKey: ['post-filter-result', `${filters.category}-${filters.tag}`],
-    enabled: false,
-    initialData,
-    queryFn: async () => {
-      const { data, status } = await axios.post<{
-        filteredPosts: SearchResult[];
+  const filterQueryKey =
+    (filters.category || filters.tag).length !== 0
+      ? `${filters.category}-${filters.tag}`
+      : undefined;
+
+  const queryResult = useInfiniteQuery<QueryResult>({
+    queryKey: ['post-filter-result', filterQueryKey],
+    enabled: Boolean(filterQueryKey),
+    initialPageParam: undefined,
+    getNextPageParam: (lastPage) =>
+      lastPage?.pageInfo?.hasNextPage ? lastPage.pageInfo.endCursor : undefined,
+    initialData: {
+      pages: [
+        {
+          edges: initialData?.map((p) => ({ cursor: p.id, node: p })) || [],
+        },
+      ],
+      pageParams: [undefined],
+    },
+    queryFn: async ({ pageParam = undefined }) => {
+      const { data: res, status } = await axios.post<{
+        data: QueryResult;
         status: number;
         errMsg?: string;
-      }>('/action/filter-posts', filters);
+      }>('/action/filter-posts', { ...filters, cursor: pageParam });
 
       if (![200, 400].includes(status)) {
-        throw new Error(data?.errMsg);
+        throw new Error(res?.errMsg);
       }
 
-      return data.filteredPosts ?? [];
+      if (res.status === 404) {
+        return { edges: [] };
+      }
+
+      return res.data ?? [{ edges: [] }];
     },
   });
 

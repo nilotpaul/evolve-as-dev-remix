@@ -18,6 +18,7 @@ const PostFilterForm = ({
         ref={formRef}
         onSubmit={form.handleSubmit((v) => {
           if (v.category.length !== 0 || v.tag.length !== 0) {
+            console.log(v);
             filterPostsMutation.refetch();
           }
         })}

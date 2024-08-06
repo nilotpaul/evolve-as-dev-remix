@@ -1,5 +1,6 @@
 import axios, { AxiosError } from 'axios';
-import { Post, SearchResult } from '~/types/blog-types';
+import { POSTS_FILTER_SEARCH_RESULTS_LIMIT } from '~/config/infinite-search';
+import { FilteredPaginatedPosts, Post, SearchResult } from '~/types/blog-types';
 import { env } from '~/validations/env';
 import { FilterPost } from '~/validations/post.validation';
 
@@ -221,34 +222,52 @@ export const getPostsByAuthor = async (authorName: string, limit: number = 6) =>
   return data?.posts as Omit<Post, 'content'>[];
 };
 
-export const filterPosts = async (filters: FilterPost, limit: number = 6) => {
+export const filterPosts = async (
+  filters: FilterPost,
+  { first = POSTS_FILTER_SEARCH_RESULTS_LIMIT, cursor = '' }: { first?: number; cursor?: string }
+) => {
   const category = filters.category.map((c) => `"${c}"`);
   const tag = filters.tag.map((tag) => `"${tag}"`);
 
   const comma = category.length === 0 || tag.length === 0 ? '' : ',';
 
+  const after = !cursor || cursor?.length === 0 ? '' : `, after: "${cursor}"`;
+
   const query = `
-    query Posts {
-      posts(where: { ${tag.length === 0 ? '' : `tag_contains_some: [${tag}]`} ${comma} ${category.length === 0 ? '' : `category_contains_some: [${category}]`} } first: ${limit}) {
-        id
-        isFeatured
-        publishDate
-        category
-        tag
-        slug
-        title
-        excerpt {
-          text
+    query filteredPostsPaginated {
+      postsConnection(where: { ${tag.length === 0 ? '' : `tag_contains_some: [${tag}]`} ${comma} ${category.length === 0 ? '' : `category_contains_some: [${category}]`} }, first: ${first}${after}) {
+        edges {
+          cursor
+          node {
+            id
+            title
+            category
+            tag
+            slug
+            coverImg {
+              url
+            }
+            excerpt {
+              text
+            }
+            publishDate
+            author
+          }
         }
-        coverImg {
-          url
+        pageInfo {
+          hasNextPage
+          hasPreviousPage
+          startCursor
+          endCursor
+          pageSize
         }
-        author
       }
     }
   `;
 
-  const { data } = await getHygraphData(query);
+  console.log(query);
 
-  return data?.posts as SearchResult[] | undefined;
+  const { data } = (await getHygraphData(query)) as FilteredPaginatedPosts;
+
+  return data?.postsConnection;
 };

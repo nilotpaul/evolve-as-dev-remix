@@ -1,0 +1,1 @@
+export const POSTS_FILTER_SEARCH_RESULTS_LIMIT = 8;

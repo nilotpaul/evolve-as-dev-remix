@@ -15,8 +15,10 @@ const FilteredPosts = () => {
 
   const [form, mutation] = useFilterPosts(trendingPosts);
 
+  const data = mutation.data.pages.flatMap((page) => page);
+
   return (
-    <div className='space-y-12'>
+    <div className='w-full space-y-12'>
       <Accordion
         type='single'
         defaultValue='item-1'
@@ -46,7 +48,22 @@ const FilteredPosts = () => {
         </AccordionItem>
       </Accordion>
 
-      <FilterPostResults filteredPosts={mutation.data} />
+      <FilterPostResults data={data} />
+
+      <div className='mt-8 flex w-full items-center justify-center'>
+        <Button
+          disabled={!mutation.hasNextPage}
+          onClick={() => {
+            if (mutation.hasNextPage) {
+              mutation.fetchNextPage();
+            }
+          }}
+          variant='secondary'
+          className='w-full max-w-xs font-semibold'
+        >
+          Load More
+        </Button>
+      </div>
     </div>
   );
 };

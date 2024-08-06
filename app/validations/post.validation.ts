@@ -8,6 +8,7 @@ export const filterPostSchema = z.object({
   tag: z.array(z.enum(POST_TAGS_ENUM)).refine((v) => new Set(v).size === v.length, {
     message: 'Duplicates values are not allowed',
   }),
+  cursor: z.string().optional(),
 });
 
 export type FilterPost = z.infer<typeof filterPostSchema>;

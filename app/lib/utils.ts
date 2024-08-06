@@ -69,3 +69,8 @@ export const getFallback = (name: string) => {
 
   return { firstName, lastName, fallback };
 };
+
+export const createLinkToPost = ({ category, slug }: { category: string[]; slug: string }) => {
+  const link = `/blogs/${category[0]}/${slug}`;
+  return link;
+};

@@ -13,6 +13,7 @@ import {
 import { getUserLoader } from './server/actions/auth.action';
 import { HydrationBoundary } from '@tanstack/react-query';
 import { useTheme } from './components/ThemeProvider';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 import Providers from './components/Providers';
 import { Toaster } from 'sonner';
@@ -101,6 +102,7 @@ export default function App() {
         <HydrationBoundary state={dehydratedQuery}>
           <Outlet />
         </HydrationBoundary>
+        <ReactQueryDevtools />
       </RootLayout>
     </Providers>
   );
