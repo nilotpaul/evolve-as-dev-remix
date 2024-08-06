@@ -12,26 +12,23 @@ export type QueryResult =
       pageInfo?: FilteredPaginatedPosts['data']['postsConnection']['pageInfo'];
     };
 
+const initialFilterState: FilterPost = { category: [], tag: [], title: '' };
+
 export const useFilterPosts = (initialData?: SearchResult[]) => {
   const form = useForm<FilterPost>({
     resolver: zodResolver(filterPostSchema),
-    defaultValues: {
-      category: [],
-      tag: [],
-    },
+    defaultValues: initialFilterState,
   });
 
-  const filters = form.getValues();
-
-  const filterQueryKey =
-    (filters.category || filters.tag).length !== 0
-      ? `${filters.category}-${filters.tag}`
-      : undefined;
+  let filters: FilterPost = initialFilterState;
+  if (form.formState.isSubmitting) {
+    filters = form.getValues();
+  }
 
   const queryResult = useInfiniteQuery<QueryResult>({
-    queryKey: ['post-filter-result', filterQueryKey],
-    enabled: Boolean(filterQueryKey),
+    queryKey: ['post-filter-result', form.getValues()],
     initialPageParam: undefined,
+    enabled: Boolean(filters),
     getNextPageParam: (lastPage) =>
       lastPage?.pageInfo?.hasNextPage ? lastPage.pageInfo.endCursor : undefined,
     initialData: {

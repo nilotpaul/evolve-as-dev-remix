@@ -1,6 +1,7 @@
 import { Link } from '@remix-run/react';
 import { Separator } from './ui/separator';
 import { FeaturedPost } from '~/types/blog-types';
+import { createLinkToPost } from '~/lib/utils';
 
 type TrendingPostsProps = {
   posts: FeaturedPost[];
@@ -14,7 +15,7 @@ const TrendingPosts = ({ posts }: TrendingPostsProps) => {
 
       <div className='grid gap-x-4 sm:grid-cols-2 md:grid-cols-1'>
         {posts.slice(0, 4).map((post, index) => (
-          <Link key={post.id} to={`/blogs/${post.category}/${post.slug}`}>
+          <Link key={post.id} to={createLinkToPost(post)}>
             <article className='relative mt-4 flex cursor-pointer items-start gap-2 rounded-sm p-1 px-1.5 transition-colors hover:bg-zinc-300 dark:hover:bg-gray-900 sm:space-x-3'>
               <img
                 src={post.coverImg.url}

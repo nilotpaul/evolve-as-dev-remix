@@ -228,6 +228,8 @@ export const filterPosts = async (
 ) => {
   const category = filters.category.map((c) => `"${c}"`);
   const tag = filters.tag.map((tag) => `"${tag}"`);
+  const title =
+    !filters.title || filters.title.length === 0 ? '' : `, title_contains: "${filters.title}"`;
 
   const comma = category.length === 0 || tag.length === 0 ? '' : ',';
 
@@ -235,7 +237,7 @@ export const filterPosts = async (
 
   const query = `
     query filteredPostsPaginated {
-      postsConnection(where: { ${tag.length === 0 ? '' : `tag_contains_some: [${tag}]`} ${comma} ${category.length === 0 ? '' : `category_contains_some: [${category}]`} }, first: ${first}${after}) {
+      postsConnection(where: { ${tag.length === 0 ? '' : `tag_contains_some: [${tag}]`} ${comma} ${category.length === 0 ? '' : `category_contains_some: [${category}]`}${title} }, first: ${first}${after}) {
         edges {
           cursor
           node {
@@ -264,8 +266,6 @@ export const filterPosts = async (
       }
     }
   `;
-
-  console.log(query);
 
   const { data } = (await getHygraphData(query)) as FilteredPaginatedPosts;
 

@@ -5,6 +5,7 @@ import GridWrapper from '~/components/ui/GridWrapper';
 import Heading from '~/components/ui/Heading';
 import { cacheHeaders } from '~/config/app';
 import { getPostsByCategory } from '~/lib/hygraph';
+import { createLinkToPost } from '~/lib/utils';
 
 // Cache control headers for this category page.
 export const headers: HeadersFunction = cacheHeaders();
@@ -39,8 +40,8 @@ const Category = () => {
 
       <GridWrapper>
         {posts.map((post) => (
-          <Link key={post.id} to={`/categories/${post.category[0]}/${post.slug}`}>
-            <PostPreview post={post} />
+          <Link key={post.id} to={createLinkToPost(post)}>
+            <PostPreview title={post.title} excerpt={post.excerpt.text} image={post.coverImg.url} />
           </Link>
         ))}
       </GridWrapper>

@@ -1,6 +1,7 @@
 import { type FeaturedPost } from '~/types/blog-types';
 import { Card, CardFooter } from './ui/card';
 import { Link } from '@remix-run/react';
+import { createLinkToPost } from '~/lib/utils';
 
 type FeaturedPostProps = {
   post: FeaturedPost;
@@ -8,7 +9,7 @@ type FeaturedPostProps = {
 
 const FeaturedPost = ({ post }: FeaturedPostProps) => {
   return (
-    <Link to={`/blogs/${post.category}/${post.slug}`}>
+    <Link to={createLinkToPost(post)}>
       <Card className='shadow-purple_color/35 hover:shadow-purple_color relative flex min-h-[25rem] cursor-pointer flex-col justify-between border-0 shadow-xl transition-all duration-300 hover:scale-[0.99] sm:h-full'>
         <img
           className='absolute z-0 h-full w-full rounded-md object-cover shadow-md shadow-gray-400 dark:shadow-gray-900 dark:brightness-50'

@@ -14,7 +14,6 @@ const FilteredPosts = () => {
   const { trendingPosts } = useLoaderData<{ trendingPosts: TrendingPost[] }>();
 
   const [form, mutation] = useFilterPosts(trendingPosts);
-
   const data = mutation.data.pages.flatMap((page) => page);
 
   return (

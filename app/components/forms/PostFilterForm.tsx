@@ -2,6 +2,7 @@ import { categories, Tags } from '~/config/site-links';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form';
 import { useFilterPosts } from '~/hooks/useFilterPosts';
 import { MultiSelect } from '../ui/multi-select';
+import { Input } from '../ui/input';
 
 const PostFilterForm = ({
   formRef,
@@ -17,13 +18,33 @@ const PostFilterForm = ({
       <form
         ref={formRef}
         onSubmit={form.handleSubmit((v) => {
-          if (v.category.length !== 0 || v.tag.length !== 0) {
-            console.log(v);
+          console.log(v);
+          if (v.title.length !== 0 || v.category.length !== 0 || v.tag.length !== 0) {
             filterPostsMutation.refetch();
           }
         })}
         className='mt-3 grid grid-cols-3 gap-5'
       >
+        <FormField
+          control={form.control}
+          name='title'
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Post Title</FormLabel>
+              <FormControl>
+                <Input
+                  type='text'
+                  placeholder='Enter post title...'
+                  onChange={field.onChange}
+                  defaultValue={field.value}
+                  name={field.name}
+                  ref={field.ref}
+                />
+              </FormControl>
+              <FormMessage>{form.formState.errors.title?.message}</FormMessage>
+            </FormItem>
+          )}
+        />
         <FormField
           control={form.control}
           name='category'
