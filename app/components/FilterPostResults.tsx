@@ -4,8 +4,9 @@ import GridWrapper from './ui/GridWrapper';
 import { QueryResult } from '~/hooks/useFilterPosts';
 import { Link } from '@remix-run/react';
 import { createLinkToPost } from '~/lib/utils';
+import PostLoading from './loadings/PostLoading';
 
-const FilterPostResults = ({ data }: { data: QueryResult[] }) => {
+const FilterPostResults = ({ data, isPending }: { data: QueryResult[]; isPending: boolean }) => {
   const filteredPosts = data.flatMap((p) => p.edges) || [];
 
   if (!filteredPosts || filteredPosts.length === 0) {
@@ -17,16 +18,22 @@ const FilterPostResults = ({ data }: { data: QueryResult[] }) => {
       <Heading>Results</Heading>
 
       <GridWrapper className='xl:grid-cols-3 xl:gap-8'>
-        {filteredPosts.map(({ node: post }) => (
-          <Link key={post.id} to={createLinkToPost(post)}>
-            <PostPreview
-              excerpt={post.excerpt.text}
-              image={post.coverImg.url}
-              title={post.title}
-              thumbnail
-            />
-          </Link>
-        ))}
+        {!isPending ? (
+          <>
+            {filteredPosts.map(({ node: post }) => (
+              <Link key={post.id} to={createLinkToPost(post)}>
+                <PostPreview
+                  excerpt={post.excerpt.text}
+                  image={post.coverImg.url}
+                  title={post.title}
+                  thumbnail
+                />
+              </Link>
+            ))}
+          </>
+        ) : (
+          <PostLoading thumbnail />
+        )}
       </GridWrapper>
     </>
   );
