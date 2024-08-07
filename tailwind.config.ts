@@ -1,5 +1,6 @@
 import tailwindAnimate from 'tailwindcss-animate';
 import tailwindTypography from '@tailwindcss/typography';
+import tailwindScrollbar from 'tailwind-scrollbar';
 import { Config } from 'tailwindcss';
 import svgToDataUri from 'mini-svg-data-uri';
 
@@ -83,6 +84,7 @@ const config = {
   plugins: [
     tailwindAnimate,
     tailwindTypography,
+    tailwindScrollbar,
     addVariablesForColors,
     function ({ matchUtilities, theme }: any) {
       matchUtilities(

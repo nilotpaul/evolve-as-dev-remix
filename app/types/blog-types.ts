@@ -13,9 +13,7 @@ export type Post = {
   coverImg: {
     url: string;
   };
-  content: {
-    markdown: string;
-  };
+  content: string;
   author: string;
 };
 

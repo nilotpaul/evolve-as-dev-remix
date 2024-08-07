@@ -145,5 +145,5 @@ export function ErrorBoundary() {
 
   console.log('root error:', err);
 
-  return <pre>{JSON.stringify(err)}</pre>;
+  return <code className='prose dark:prose-xl'>{JSON.stringify(err)}</code>;
 }

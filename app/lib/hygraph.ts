@@ -128,9 +128,7 @@ export const getPostBySlug = async ({ category, slug }: { slug: string; category
         coverImg {
           url
         }
-        content {
-          markdown
-        }
+        content
         author
       }
     }
@@ -183,9 +181,7 @@ export const getPostsByTag = async (tag: string) => {
         coverImg {
           url
         }
-        content {
-          markdown
-        }
+        content
         author
       }
     }

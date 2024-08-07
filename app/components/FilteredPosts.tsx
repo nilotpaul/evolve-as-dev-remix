@@ -73,9 +73,11 @@ const FilteredPosts = () => {
 
       <div className='mt-8 flex w-full items-center justify-center'>
         <Button
-          disabled={!mutation.hasNextPage || mutation.isPending}
+          disabled={
+            !mutation.hasNextPage || mutation.isPending || mutation.isLoading || mutation.isFetching
+          }
           onClick={() => {
-            if (mutation.hasNextPage) {
+            if (mutation.hasNextPage && !mutation.isPending) {
               mutation.fetchNextPage();
             }
           }}

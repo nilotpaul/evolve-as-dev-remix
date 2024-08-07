@@ -74,3 +74,26 @@ export const createLinkToPost = ({ category, slug }: { category: string[]; slug:
   const link = `/blogs/${category[0]}/${slug}`;
   return link;
 };
+
+export const calculateReadingTime = (text: string): number => {
+  const wordsPerMinute = 200;
+  const noOfWords = text.split(/\s/g).length;
+
+  const minutes = noOfWords / wordsPerMinute;
+  const readTime = Math.ceil(minutes);
+
+  return readTime;
+};
+
+export default function getUrl(url: string) {
+  if (typeof window !== 'undefined') return url;
+
+  const CLIENT_DOMAIN = import.meta.env.VITE_CLIENT_DOMAIN || '';
+  const isProd = import.meta.env.PROD;
+
+  if (CLIENT_DOMAIN !== '' && isProd) {
+    return `${CLIENT_DOMAIN}${url}`;
+  } else {
+    return `http://localhost:5174${url}`;
+  }
+}
