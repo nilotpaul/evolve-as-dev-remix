@@ -30,10 +30,15 @@ export const getHygraphData = async (query: string) => {
   }
 };
 
-export const getPosts = async () => {
+export const getPosts = async (
+  {
+    sort = { on: 'title', type: 'ASC' },
+  }: { sort?: { on?: 'title' | 'publishDate'; type?: 'ASC' | 'DESC' } } = {},
+  limit: number = 6
+) => {
   const query = `
     query Posts {
-      posts {
+      posts(first: ${limit}, orderBy: ${sort.on}_${sort.type}) {
         id
         isFeatured
         publishDate

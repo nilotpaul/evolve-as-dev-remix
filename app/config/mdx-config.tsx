@@ -22,8 +22,9 @@ export const components = ({ showToc }: { showToc: boolean }): MDXComponents => 
       {children}
     </h1>
   ),
+  // Earlier this fixed some kind of issue, but not sure what.
   // p: ({ children, ...props }) =>
-  //   typeof children === 'string' ? <p {...props}>{children}</p> : children,  // Earlier this fixed some kind of issue, but not sure what.
+  //   typeof children === 'string' ? <p {...props}>{children}</p> : children,
   a: ({ children, href, className }) => (
     <Link
       className={cn(

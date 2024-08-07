@@ -10,7 +10,12 @@ export const headers: HeadersFunction = cacheHeaders();
 
 export const loader = async () => {
   const featuredPostPromise = getFeaturedPost();
-  const trendingPostsPromise = getPosts();
+  const trendingPostsPromise = getPosts({
+    sort: {
+      on: 'publishDate',
+      type: 'DESC',
+    },
+  });
 
   const [featuredPost, trendingPosts] = await Promise.all([
     featuredPostPromise,
@@ -28,7 +33,7 @@ const Blogs = () => {
 
   if (!featuredPost || !trendingPosts) {
     return (
-      <p className='text-destructive'>
+      <p className='text-lg text-destructive'>
         Failed to get the featured posts, might be an error. Please try again after sometime.
       </p>
     );
