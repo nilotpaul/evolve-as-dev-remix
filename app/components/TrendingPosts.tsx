@@ -22,7 +22,7 @@ const TrendingPosts = ({ posts }: TrendingPostsProps) => {
                 alt={post.title}
                 height={65}
                 width={60}
-                className='h-[65px] w-[60px] rounded-sm object-cover shadow-lg shadow-zinc-400 dark:shadow-gray-900'
+                className='h-[65px] w-[110px] rounded-sm object-cover shadow-lg shadow-zinc-400 dark:shadow-gray-900'
               />
 
               <div className='flex flex-col justify-between gap-2.5'>
