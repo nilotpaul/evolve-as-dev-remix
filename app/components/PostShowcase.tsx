@@ -1,43 +1,31 @@
 import { format } from 'date-fns';
 import GradiantButton from './ui/GradiantButton';
 import { cn } from '~/lib/utils';
+import { LandingPost } from '~/types/blog-types';
 
 type PostShowcaseProps = {
   type?: 'default' | 'reverse';
   shadowClassName?: string;
-  backgroundImage?: string;
-  gradientFrom?: string;
-  gradientTo?: string;
+  outerDivClassName?: string;
+  backgroundImage: string;
+  post: LandingPost;
 };
 
 const PostShowcase = ({
   type = 'default',
   shadowClassName,
+  outerDivClassName,
   backgroundImage,
-  gradientFrom,
-  gradientTo,
+  post,
 }: PostShowcaseProps) => {
-  const post = {
-    title: 'Surface the insights that matter',
-    description:
-      'Enterpret helps us have a holistic view. We can actually understand: “What are the broader sentiments? What are our users saying?',
-    readingTime: 5,
-    publishedDate: '2024-05-20T12:00:00.000Z',
-    author: {
-      image: 'https://avatars.githubusercontent.com/u/71167911?v=4',
-      name: 'Dexter',
-    },
-  };
-
   return (
     <article className='mt-12 grid grid-cols-[50%,40%] place-content-between'>
       <div
-        className={cn('relative h-[550px] w-[500px] rounded-xl bg-gradient-to-b pl-8 pt-12', {
-          'order-2': type === 'reverse',
-        })}
-        style={{
-          background: `linear-gradient(to bottom, ${gradientFrom}, ${gradientTo})`,
-        }}
+        className={cn(
+          'relative h-[550px] w-[500px] rounded-xl bg-gradient-to-b from-[#fe7587] to-blue-500 pl-8 pt-12',
+          { 'order-2': type === 'reverse' },
+          outerDivClassName
+        )}
       >
         <img
           src={backgroundImage}
@@ -47,8 +35,8 @@ const PostShowcase = ({
           className='h-full w-full rounded-br-lg rounded-tl-lg object-cover shadow-2xl shadow-black brightness-75'
         />
         <img
-          src='https://media.graphassets.com/P0ZRXRcRqK0tHb7qGSAA'
-          alt={'test'}
+          src={post.coverImg.url}
+          alt={post.title}
           className={cn(
             'absolute -bottom-20 -right-20 h-[200px] w-[400px] rounded-lg object-cover shadow-xl shadow-black brightness-95',
             {
@@ -75,21 +63,21 @@ const PostShowcase = ({
         })}
       >
         <span className='font-semibold tracking-widest text-blue-500'>
-          {format(post.publishedDate, 'mo MMM, yy')}
+          {format(post.publishDate, 'mo MMM, yy')}
         </span>
         <h2 className='text-4xl font-bold'>{post.title}</h2>
-        <p className='text-lg'>&quot;{post.description}&quot;</p>
+        <p className='text-lg'>&quot;{post.excerpt.text}&quot;</p>
 
         <div className='flex items-center gap-3'>
-          <img
-            src={post.author.image}
-            alt={post.author.name}
+          {/* <img
+            src={post.author}
+            alt={post.author}
             className='rounded-full'
             height={65}
             width={65}
-          />
-          <div>
-            <span>{post.author.name}</span>
+          /> */}
+          <div className='capitalize'>
+            <span>{post.author}</span>
             <p>Global VP of Customer Experience</p>
           </div>
         </div>

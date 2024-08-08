@@ -54,3 +54,8 @@ export type FeaturedPost = Omit<Post, 'content'>;
 export type TrendingPost = Omit<Post, 'content'>;
 
 export type SearchResult = Omit<Post, 'content' | 'updatedAt'>;
+
+export type LandingPost = Pick<
+  Post,
+  'id' | 'title' | 'publishDate' | 'excerpt' | 'coverImg' | 'author'
+>;

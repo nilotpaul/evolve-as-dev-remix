@@ -8,6 +8,11 @@ import { useNavigate } from '@remix-run/react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { toast } from 'sonner';
+import { APIPrefix } from '~/config/api-utils';
+
+const AUTH_SERVICE = import.meta.env.VITE_AUTH_SERVICE_URL + APIPrefix;
+// const COMMENT_SERVICE = import.meta.env.VITE_COMMENT_SERVICE_URL + APIPrefix;
+// const VOTE_SERVICE = import.meta.env.VITE_VOTE_SERVICE_URL + APIPrefix;
 
 export const useLogin = () => {
   const navigate = useNavigate();
@@ -16,7 +21,7 @@ export const useLogin = () => {
     mutationKey: ['login'],
     mutationFn: async (provider: LoginProvider) => {
       const { data } = await axios.post<LoginWithProviderResponse>(
-        `/auth-service/auth/login/${provider}`
+        `${AUTH_SERVICE}/auth/login/${provider}`
       );
 
       const { url } = loginWithProviderResponseSchema.parse(data);
@@ -43,7 +48,7 @@ export const useLogout = () => {
   const mutationResult = useMutation({
     mutationKey: ['logout'],
     mutationFn: async () => {
-      await axios.post('/auth-service/auth/logout');
+      await axios.post(`${AUTH_SERVICE}/auth/logout`);
     },
 
     onSuccess: () => {
@@ -82,7 +87,7 @@ export const getUser = async (url: string, isServer: boolean, cookie: string | n
 export const useSession = () => {
   const queryResult = useQuery({
     queryKey: ['session'],
-    queryFn: () => getUser('/auth-service', false, null),
+    queryFn: () => getUser(AUTH_SERVICE, false, null),
     refetchOnMount: false,
     retryOnMount: false,
     retry: false,

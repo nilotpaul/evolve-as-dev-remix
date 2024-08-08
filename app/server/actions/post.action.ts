@@ -24,7 +24,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
       cursor: parsedData.cursor,
     });
 
-    if (!data.edges || data.edges.length === 0) {
+    if (!data?.edges || data?.edges.length === 0) {
       return json({
         status: 404,
         errMsg: 'No post found',

@@ -1,6 +1,6 @@
 import axios, { AxiosError } from 'axios';
 import { POSTS_FILTER_SEARCH_RESULTS_LIMIT } from '~/config/infinite-search';
-import { FilteredPaginatedPosts, Post, SearchResult } from '~/types/blog-types';
+import { FilteredPaginatedPosts, LandingPost, Post, SearchResult } from '~/types/blog-types';
 import { env } from '~/validations/env';
 import { FilterPost } from '~/validations/post.validation';
 
@@ -59,7 +59,7 @@ export const getPosts = async (
 
   const { data } = await getHygraphData(query);
 
-  return data?.posts as Omit<Post, 'content'>[];
+  return data?.posts as Omit<Post, 'content'>[] | undefined;
 };
 
 export const getFeaturedPost = async () => {
@@ -86,7 +86,7 @@ export const getFeaturedPost = async () => {
 
   const { data } = await getHygraphData(query);
 
-  return data?.posts[0] as Omit<Post, 'content'>;
+  return data?.posts[0] as Omit<Post, 'content'> | undefined;
 };
 
 export const getPostsByCategory = async (category: string) => {
@@ -114,7 +114,7 @@ export const getPostsByCategory = async (category: string) => {
 
   const { data } = await getHygraphData(query);
 
-  return data?.posts as Omit<Post, 'content'>[];
+  return data?.posts as Omit<Post, 'content'>[] | undefined;
 };
 
 export const getPostBySlug = async ({ category, slug }: { slug: string; category: string }) => {
@@ -141,7 +141,7 @@ export const getPostBySlug = async ({ category, slug }: { slug: string; category
 
   const { data } = await getHygraphData(query);
 
-  return data?.posts[0] as Post;
+  return data?.posts[0] as Post | undefined;
 };
 
 export const getPostsByTitle = async (title: string) => {
@@ -167,7 +167,7 @@ export const getPostsByTitle = async (title: string) => {
 
   const { data } = await getHygraphData(query);
 
-  return data?.posts as SearchResult[];
+  return data?.posts as SearchResult[] | undefined;
 };
 
 export const getPostsByTag = async (tag: string) => {
@@ -194,7 +194,7 @@ export const getPostsByTag = async (tag: string) => {
 
   const { data } = await getHygraphData(query);
 
-  return data?.posts as Post[];
+  return data?.posts as Post[] | undefined;
 };
 
 export const getPostsByAuthor = async (authorName: string, limit: number = 6) => {
@@ -220,7 +220,7 @@ export const getPostsByAuthor = async (authorName: string, limit: number = 6) =>
 
   const { data } = await getHygraphData(query);
 
-  return data?.posts as Omit<Post, 'content'>[];
+  return data?.posts as Omit<Post, 'content'>[] | undefined;
 };
 
 export const filterPosts = async (
@@ -268,18 +268,15 @@ export const filterPosts = async (
     }
   `;
 
-  const { data } = (await getHygraphData(query)) as FilteredPaginatedPosts;
+  const response = (await getHygraphData(query)) as FilteredPaginatedPosts | undefined;
 
-  return data?.postsConnection;
+  return response?.data?.postsConnection;
 };
-
-
-
 
 export const getPostsForLanding = async () => {
   const query = `
     query Posts {
-      posts(where: {forLanding: true}) {
+      posts(where: { forLanding: true }, first: 3) {
         id
         title
         publishDate
@@ -296,5 +293,5 @@ export const getPostsForLanding = async () => {
 
   const { data } = await getHygraphData(query);
 
-  return data?.posts as Omit<Post, 'content'>[];
+  return data?.posts as LandingPost[] | undefined;
 };

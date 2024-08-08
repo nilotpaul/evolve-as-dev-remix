@@ -6,6 +6,9 @@ import InfoCards from './InfoCards';
 import GradiantInfoText from './GradiantInfoText';
 import { Separator } from './ui/separator';
 
+import { LandingPost } from '~/types/blog-types';
+import { useLoaderData } from '@remix-run/react';
+
 const backgroundImages = [
   './landing-post-background-1.png',
   './landing-post-background-2.png',
@@ -14,6 +17,7 @@ const backgroundImages = [
 
 const Landing = () => {
   const words = ['Boost', 'Your', 'Development'];
+  const { posts } = useLoaderData<{ posts: LandingPost[] }>();
 
   return (
     <div className='space-y-44'>
@@ -56,20 +60,20 @@ const Landing = () => {
         {/* <RecentPosts /> */}
         <PostShowcase
           backgroundImage={backgroundImages[0]}
-          gradientFrom='#BF8858'
-          gradientTo='#007F76'
+          post={posts[0]}
+          outerDivClassName='from-[#BF8858] to-[#007F76]'
         />
         <PostShowcase
           type='reverse'
           shadowClassName='bg-violet-500/80'
           backgroundImage={backgroundImages[1]}
-          gradientFrom='#BFBFBF'
-          gradientTo='#44A9AC'
+          post={posts[1]}
+          outerDivClassName='from-[#BFBFBF] to-[#44A9AC]'
         />
         <PostShowcase
           backgroundImage={backgroundImages[2]}
-          gradientFrom='#BCBCBB'
-          gradientTo='#00BF80'
+          post={posts[2]}
+          outerDivClassName='from-[#BCBCBB] to-[#00BF80]'
         />
       </section>
 
