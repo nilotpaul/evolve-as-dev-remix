@@ -6,6 +6,12 @@ import InfoCards from './InfoCards';
 import GradiantInfoText from './GradiantInfoText';
 import { Separator } from './ui/separator';
 
+const backgroundImages = [
+  './landing-post-background-1.png',
+  './landing-post-background-2.png',
+  './landing-post-background-3.png',
+];
+
 const Landing = () => {
   const words = ['Boost', 'Your', 'Development'];
 
@@ -48,9 +54,23 @@ const Landing = () => {
       </h3>
       <section className='space-y-64'>
         {/* <RecentPosts /> */}
-        <PostShowcase />
-        <PostShowcase type='reverse' shadowClassName='bg-violet-500/80' />
-        <PostShowcase />
+        <PostShowcase
+          backgroundImage={backgroundImages[0]}
+          gradientFrom='#BF8858'
+          gradientTo='#007F76'
+        />
+        <PostShowcase
+          type='reverse'
+          shadowClassName='bg-violet-500/80'
+          backgroundImage={backgroundImages[1]}
+          gradientFrom='#BFBFBF'
+          gradientTo='#44A9AC'
+        />
+        <PostShowcase
+          backgroundImage={backgroundImages[2]}
+          gradientFrom='#BCBCBB'
+          gradientTo='#00BF80'
+        />
       </section>
 
       <InfoCards />

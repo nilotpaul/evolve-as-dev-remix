@@ -5,12 +5,20 @@ import { cn } from '~/lib/utils';
 type PostShowcaseProps = {
   type?: 'default' | 'reverse';
   shadowClassName?: string;
+  backgroundImage?: string;
+  gradientFrom?: string;
+  gradientTo?: string;
 };
 
-const PostShowcase = ({ type = 'default', shadowClassName }: PostShowcaseProps) => {
+const PostShowcase = ({
+  type = 'default',
+  shadowClassName,
+  backgroundImage,
+  gradientFrom,
+  gradientTo,
+}: PostShowcaseProps) => {
   const post = {
     title: 'Surface the insights that matter',
-    thumbnail: '/post-thumbnail.png',
     description:
       'Enterpret helps us have a holistic view. We can actually understand: “What are the broader sentiments? What are our users saying?',
     readingTime: 5,
@@ -24,20 +32,22 @@ const PostShowcase = ({ type = 'default', shadowClassName }: PostShowcaseProps) 
   return (
     <article className='mt-12 grid grid-cols-[50%,40%] place-content-between'>
       <div
-        className={cn(
-          'relative h-[550px] w-[500px] rounded-xl bg-gradient-to-b from-[#fe7587] to-blue-500 pl-8 pt-12',
-          { 'order-2': type === 'reverse' }
-        )}
+        className={cn('relative h-[550px] w-[500px] rounded-xl bg-gradient-to-b pl-8 pt-12', {
+          'order-2': type === 'reverse',
+        })}
+        style={{
+          background: `linear-gradient(to bottom, ${gradientFrom}, ${gradientTo})`,
+        }}
       >
         <img
-          src={post.thumbnail}
+          src={backgroundImage}
           alt={post.title}
           height={550}
           width={500}
           className='h-full w-full rounded-br-lg rounded-tl-lg object-cover shadow-2xl shadow-black brightness-75'
         />
         <img
-          src={'/main.png'}
+          src='https://media.graphassets.com/P0ZRXRcRqK0tHb7qGSAA'
           alt={'test'}
           className={cn(
             'absolute -bottom-20 -right-20 h-[200px] w-[400px] rounded-lg object-cover shadow-xl shadow-black brightness-95',

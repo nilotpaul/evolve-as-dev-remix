@@ -272,3 +272,29 @@ export const filterPosts = async (
 
   return data?.postsConnection;
 };
+
+
+
+
+export const getPostsForLanding = async () => {
+  const query = `
+    query Posts {
+      posts(where: {forLanding: true}) {
+        id
+        title
+        publishDate
+        excerpt {
+          text
+        }
+        coverImg {
+          url
+        }
+        author
+      }
+    }
+  `;
+
+  const { data } = await getHygraphData(query);
+
+  return data?.posts as Omit<Post, 'content'>[];
+};
