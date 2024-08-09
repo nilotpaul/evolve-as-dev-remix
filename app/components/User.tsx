@@ -19,7 +19,7 @@ type UserProps = {
 const User = ({ session }: UserProps) => {
   const { fallback } = getFallback(session.username);
 
-  const logout = useLogout();
+  const logout = useLogout(session.id);
 
   return (
     <DropdownMenu>

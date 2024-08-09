@@ -28,7 +28,7 @@ const Mdx = ({ showToc = false, code, className }: MdxProps) => {
   return (
     <article
       className={cn(
-        'prose-pre:scrollbar-none prose prose-base z-50 min-w-full dark:prose-invert prose-a:no-underline',
+        'prose prose-base z-50 min-w-full dark:prose-invert prose-a:no-underline prose-pre:scrollbar-none hover:prose-a:underline',
         className
       )}
     >

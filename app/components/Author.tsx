@@ -27,7 +27,7 @@ const Author = ({ image, name, date, classNames }: AuthorProps) => {
         <AvatarFallback className='uppercase'>{name.slice(0, 2)}</AvatarFallback>
       </Avatar>
       <div className='text-xs'>
-        <p className={cn('font-medium text-white', classNames?.name)}>{name}</p>
+        <p className={cn('font-medium capitalize text-white', classNames?.name)}>{name}</p>
         <p className={cn('text-zinc-300', classNames?.date)}>{format(date, 'MMMM dd, yyyy')}</p>
       </div>
     </div>

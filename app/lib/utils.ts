@@ -85,6 +85,10 @@ export const calculateReadingTime = (text: string): number => {
   return readTime;
 };
 
+export const formatUsername = (username: string) => {
+  return username[0] + username[username.length - 1];
+};
+
 export default function getUrl(url: string) {
   if (typeof window !== 'undefined') return url;
 

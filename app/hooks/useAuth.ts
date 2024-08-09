@@ -6,13 +6,9 @@ import {
 } from '~/validations/auth.validation';
 import { useNavigate } from '@remix-run/react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import axios from 'axios';
+import axios from '../lib/axiosConfig';
 import { toast } from 'sonner';
-import { APIPrefix } from '~/config/api-utils';
-
-const AUTH_SERVICE = import.meta.env.VITE_AUTH_SERVICE_URL + APIPrefix;
-// const COMMENT_SERVICE = import.meta.env.VITE_COMMENT_SERVICE_URL + APIPrefix;
-// const VOTE_SERVICE = import.meta.env.VITE_VOTE_SERVICE_URL + APIPrefix;
+import { AUTH_SERVICE } from '~/config/api-utils';
 
 export const useLogin = () => {
   const navigate = useNavigate();
@@ -41,12 +37,12 @@ export const useLogin = () => {
   return mutationResult;
 };
 
-export const useLogout = () => {
+export const useLogout = (userId: string | undefined = undefined) => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
   const mutationResult = useMutation({
-    mutationKey: ['logout'],
+    mutationKey: ['logout', userId],
     mutationFn: async () => {
       await axios.post(`${AUTH_SERVICE}/auth/logout`);
     },

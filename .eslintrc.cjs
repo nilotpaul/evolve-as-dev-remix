@@ -69,6 +69,7 @@ module.exports = {
       rules: {
         'react/prop-types': 'off',
         '@typescript-eslint/no-explicit-any': 'off',
+        'jsx-a11y/no-autofocus': 'off',
       },
       extends: [
         'plugin:@typescript-eslint/recommended',

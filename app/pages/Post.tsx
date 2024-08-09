@@ -11,6 +11,9 @@ import { parseMarkdown } from '~/lib/markdown';
 import SharePost from '~/components/SharePost';
 import getUrl from '~/lib/utils';
 import { useMounted } from '~/hooks/useMounted';
+import Comments from '~/components/Comments';
+import PostComment from '~/components/PostComment';
+import { useSession } from '~/hooks/useAuth';
 
 export const loader = async ({ params }: LoaderFunctionArgs) => {
   const category = params.category as string;
@@ -43,6 +46,7 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
 
 const Post = () => {
   const { post, code } = useLoaderData<typeof loader>();
+  const { session } = useSession();
 
   const isMounted = useMounted();
 
@@ -101,10 +105,10 @@ const Post = () => {
         </div>
       )}
 
-      {/* <div className='mt-10 space-y-8'>
-        <Comments postId={post.id} />
-        <PostComment postId={post.id} />
-      </div> */}
+      <div className='mt-10 max-w-2xl space-y-8'>
+        <Comments blogId={post.id} userId={session?.id} />
+        {session && <PostComment blogId={post.id} userId={session.id} />}
+      </div>
     </>
   );
 };

@@ -1,4 +1,4 @@
-import { LoaderCircle, LucideProps, Search, Sun } from 'lucide-react';
+import { Check, LoaderCircle, LucideProps, Search, SquarePen, Sun, Trash2, X } from 'lucide-react';
 import { EnterIcon, MoonIcon, CalendarIcon, ClockIcon, CaretLeftIcon } from '@radix-ui/react-icons';
 import { cn } from '~/lib/utils';
 import { ComponentProps } from 'react';
@@ -13,7 +13,7 @@ import {
   siTelegram,
 } from 'simple-icons';
 
-const defaultClassName = 'h-5 w-5 cursor-pointer xs:h-6 xs:w-6 sm:h-5 sm:w-5';
+const defaultClassName = 'h-5 w-5 cursor-pointer';
 
 const Icons = {
   Sun: Sun,
@@ -28,6 +28,10 @@ const Icons = {
   Clock: ClockIcon,
   leftArrow: CaretLeftIcon,
   Search: Search,
+  Trash: Trash2,
+  Edit: SquarePen,
+  Cross: X,
+  Check,
 
   facebook: ({ className, ...props }: JSX.IntrinsicElements['svg']) => (
     <svg

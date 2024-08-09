@@ -2,7 +2,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { FilterPost, filterPostSchema } from '~/validations/post.validation';
 import { useInfiniteQuery, useQueryClient } from '@tanstack/react-query';
-import axios from 'axios';
+import axios from '../lib/axiosConfig';
 import { FilteredPaginatedPosts, SearchResult } from '~/types/blog-types';
 import { useEffect } from 'react';
 
