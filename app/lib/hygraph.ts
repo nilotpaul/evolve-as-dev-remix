@@ -276,7 +276,7 @@ export const filterPosts = async (
 export const getPostsForLanding = async () => {
   const query = `
     query Posts {
-      posts(where: { forLanding: true }, first: 3) {
+      posts(where: { forLanding: true }, first: 3, orderBy: publishDate_DESC) {
         id
         title
         publishDate
